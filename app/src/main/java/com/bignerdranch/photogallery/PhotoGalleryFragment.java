@@ -1,5 +1,8 @@
 package com.bignerdranch.photogallery;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.AsyncTask;
@@ -19,6 +22,9 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,19 +42,19 @@ public class PhotoGalleryFragment extends Fragment {
     }
 
     private class PhotoHolder extends  RecyclerView.ViewHolder {
-        // private TextView mTitleTextView;
+        private TextView mTitleTextView;
         private ImageView mItemImageView;
 
         public PhotoHolder(View itemView) {
             super(itemView);
             mItemImageView = itemView.findViewById(R.id.gallery_item_imageView);
-           // mTitleTextView = (TextView) itemView;
+            mTitleTextView = (TextView) itemView.findViewById(R.id.gallery_item_index);
         }
-        /*public void bindGalleryItem(GalleryItem item) {
+        public void bindGalleryItem(GalleryItem item) {
             mTitleTextView.setText(item.toString());
-        }*/
+        }
 
-        public void bindDrawable(Drawable drawable) {
+       public void bindDrawable(Drawable drawable) {
             mItemImageView.setImageDrawable(drawable);
         }
     }
@@ -65,19 +71,18 @@ public class PhotoGalleryFragment extends Fragment {
         public PhotoHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
            //TextView textView = new TextView(getActivity());
            //return new PhotoHolder(textView);
-             LayoutInflater inflater = LayoutInflater.from(getActivity());
+            LayoutInflater inflater = LayoutInflater.from(getActivity());
             View view = inflater.inflate(R.layout.gallery_item, viewGroup, false);
             return new PhotoHolder(view);
 
         }
 
         @Override
-        public void onBindViewHolder(@NonNull PhotoHolder photoHolder, int position) {
-           GalleryItem galleryItem = mGalleryItems.get(position);
-            // photoHolder.bindGalleryItem(galleryItem);
-            Drawable placeHolder = getResources().getDrawable(R.drawable.bill_up_close);
-            photoHolder.bindDrawable(placeHolder);
-
+        public void onBindViewHolder(@NonNull final PhotoHolder photoHolder, int position) {
+           final GalleryItem galleryItem = mGalleryItems.get(position);
+            photoHolder.bindGalleryItem(galleryItem);
+            /*Drawable placeHolder = Drawable.createFromPath(galleryItem.getmUrl());
+            photoHolder.bindDrawable(placeHolder);*/
         }
 
         @Override
